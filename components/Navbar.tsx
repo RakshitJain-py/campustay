@@ -142,6 +142,9 @@ export default function Navbar() {
 
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-4 px-6 relative">
         <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="md:hidden">
+            <DarkModeToggle />
+          </div>
           <Link href="/" className="group flex flex-col transition hover:opacity-90">
             <span className="bg-gradient-to-r from-violet-600 to-indigo-500 bg-clip-text text-2xl sm:text-3xl font-semibold tracking-tight text-transparent dark:from-violet-400 dark:to-indigo-400">
               CampuStay
@@ -161,7 +164,6 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3 md:hidden">
-          <DarkModeToggle />
           {!user && (
             <>
               <Link href="/login" className="text-sm font-medium text-gray-700 dark:text-gray-300">
