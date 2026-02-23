@@ -142,12 +142,11 @@ export default function Navbar() {
 
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-4 px-6 relative">
         <div className="flex items-center gap-4 flex-shrink-0">
-          <DarkModeToggle />
           <Link href="/" className="group flex flex-col transition hover:opacity-90">
-            <span className="bg-gradient-to-r from-violet-600 to-indigo-500 bg-clip-text text-3xl font-semibold tracking-tight text-transparent dark:from-violet-400 dark:to-indigo-400">
+            <span className="bg-gradient-to-r from-violet-600 to-indigo-500 bg-clip-text text-2xl sm:text-3xl font-semibold tracking-tight text-transparent dark:from-violet-400 dark:to-indigo-400">
               CampuStay
             </span>
-            <span className="text-xs text-gray-500 dark:text-gray-400">Smart Living for Smarter Cities</span>
+            <span className="hidden sm:block text-xs text-gray-500 dark:text-gray-400">Smart Living for Smarter Cities</span>
           </Link>
         </div>
 
@@ -155,7 +154,11 @@ export default function Navbar() {
           <NavbarSearch />
         </div>
 
-        <nav className="hidden items-center gap-2 md:flex">{navLinks}</nav>
+        <nav className="hidden items-center gap-4 md:flex">
+          {navLinks}
+          <div className="h-6 w-px bg-gray-200 dark:bg-gray-800 mx-1" />
+          <DarkModeToggle />
+        </nav>
 
         <div className="flex items-center gap-3 md:hidden">
           <DarkModeToggle />
