@@ -1,0 +1,10 @@
+---
+description: Do not implement or mention GuardianSYNC until explicitly requested
+alwaysApply: true
+---
+
+# GuardianSYNC
+
+Do **not** introduce, implement, or reference GuardianSYNC (the guardian-linked safety feature) until the user explicitly requests it.
+
+No GuardianSYNC logic, UI, or documentation unless asked.
