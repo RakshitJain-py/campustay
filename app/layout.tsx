@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import LoadingBar from "@/components/LoadingBar";
+import { LoadingBarProvider } from "@/components/LoadingBarProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +31,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background text-foreground antialiased transition-colors duration-300`}
       >
         <ThemeProvider>
-          <LoadingBar />
-          <Navbar />
-          {children}
+          <LoadingBarProvider>
+            <Navbar />
+            {children}
+          </LoadingBarProvider>
         </ThemeProvider>
       </body>
     </html>

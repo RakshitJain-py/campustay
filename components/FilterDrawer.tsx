@@ -25,6 +25,8 @@ interface FilterDrawerProps {
   onReviewMinChange: (v: string) => void;
   sortValue: string;
   onSortChange: (v: string) => void;
+  maxDistance?: string;
+  onMaxDistanceChange?: (v: string) => void;
 }
 
 export default function FilterDrawer({
@@ -38,6 +40,8 @@ export default function FilterDrawer({
   onReviewMinChange,
   sortValue,
   onSortChange,
+  maxDistance,
+  onMaxDistanceChange,
 }: FilterDrawerProps) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -120,6 +124,20 @@ export default function FilterDrawer({
               <option value="5">⭐⭐⭐⭐⭐ & up</option>
               <option value="4">⭐⭐⭐⭐ & up</option>
               <option value="3">⭐⭐⭐ & up</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Max Distance (km)</label>
+            <select
+              value={maxDistance || ""}
+              onChange={(e) => onMaxDistanceChange && onMaxDistanceChange(e.target.value)}
+              className="mt-2 w-full rounded-xl border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-violet-500"
+            >
+              <option value="">Any distance</option>
+              <option value="5">Within 5 km</option>
+              <option value="10">Within 10 km</option>
+              <option value="20">Within 20 km</option>
+              <option value="50">Within 50 km</option>
             </select>
           </div>
           <div>

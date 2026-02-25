@@ -1,18 +1,29 @@
 "use client";
 
 import { searchColleges } from "@/lib/colleges";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouterWithLoading } from "@/hooks/useRouterWithLoading";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
 const DEBOUNCE_MS = 250;
 
 export default function NavbarSearch() {
-  const router = useRouter();
-  const [query, setQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const router = useRouterWithLoading();
+  const searchParams = useSearchParams();
+  const initialQ = searchParams ? searchParams.get("q") || "" : "";
+
+  const [query, setQuery] = useState(initialQ);
+  const [debouncedQuery, setDebouncedQuery] = useState(initialQ);
   const [open, setOpen] = useState(false);
   const [focused, setFocused] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  // Sync state when URL params change (e.g. Back button)
+  useEffect(() => {
+    const q = searchParams ? searchParams.get("q") || "" : "";
+    setQuery(q);
+    setDebouncedQuery(q);
+  }, [searchParams]);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedQuery(query), DEBOUNCE_MS);
