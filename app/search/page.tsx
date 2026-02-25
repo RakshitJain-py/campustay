@@ -42,19 +42,19 @@ export default async function SearchPage({
   const hasResults = properties && properties.length > 0;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div className="min-h-screen bg-background transition-colors duration-300">
       <div className="mx-auto max-w-7xl px-6 py-8">
-        <h1 className="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">
+        <h1 className="mb-6 text-3xl font-bold text-foreground">
           {q ? `Search: "${q}"` : "Search stays"}
         </h1>
 
         {!q ? (
-          <div className="rounded-2xl border border-gray-200 bg-gray-50 p-12 text-center dark:border-gray-800 dark:bg-gray-950">
-            <p className="text-sm text-gray-600 dark:text-gray-400">Enter a college or area in the search bar above.</p>
+          <div className="rounded-2xl border border-border bg-muted p-12 text-center">
+            <p className="text-sm text-foreground/60">Enter a college or area in the search bar above.</p>
           </div>
         ) : !hasResults ? (
-          <div className="rounded-2xl border border-gray-200 bg-gray-50 p-12 text-center dark:border-gray-800 dark:bg-gray-950">
-            <p className="text-gray-600 dark:text-gray-400">No stays found for "{q}".</p>
+          <div className="rounded-2xl border border-border bg-muted p-12 text-center">
+            <p className="text-foreground/60">No stays found for "{q}".</p>
             <Link
               href="/featured"
               className="mt-4 inline-block rounded-full bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-700 transition-colors"
@@ -68,7 +68,7 @@ export default async function SearchPage({
               {properties.map((property) => (
                 <div
                   key={property.id}
-                  className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md dark:border-gray-800 dark:bg-gray-950"
+                  className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
                 >
                   <div className="relative h-48 w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
                     {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -86,7 +86,7 @@ export default function NavbarSearch() {
       </div>
       {showDropdown && (
         <div
-          className="absolute left-0 right-0 top-full z-50 mt-2 max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+          className="absolute left-0 right-0 top-full z-50 mt-2 max-h-72 overflow-y-auto rounded-xl border border-border bg-card shadow-lg"
           role="listbox"
         >
           {Array.isArray(results) && results.length > 0 ? (
@@ -95,14 +95,14 @@ export default function NavbarSearch() {
                 key={name}
                 type="button"
                 role="option"
-                className="w-full px-4 py-3 text-left text-sm text-gray-900 transition-all duration-200 hover:bg-violet-50 dark:text-gray-200 dark:hover:bg-gray-700"
+                className="w-full px-4 py-3 text-left text-sm text-foreground transition-all duration-200 hover:bg-muted"
                 onClick={() => goToSearch(name)}
               >
                 {name}
               </button>
             ))
           ) : (
-            <div className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">
+            <div className="px-4 py-4 text-sm text-foreground/60">
               <p className="font-medium">No exact match found.</p>
               <p className="mt-1">Try searching by area or nearby college.</p>
             </div>

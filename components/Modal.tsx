@@ -42,13 +42,13 @@ export default function Modal({
       onClick={onClose}
     >
       <div
-        className={`relative w-[480px] max-w-[90%] overflow-auto rounded-2xl bg-white p-8 shadow-xl ${className}`}
+        className={`relative w-[480px] max-w-[90%] overflow-auto rounded-2xl border border-border bg-card p-8 shadow-xl ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-lg p-1 text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700"
+          className="absolute right-4 top-4 rounded-lg p-1 text-foreground/50 transition-all duration-200 hover:bg-muted hover:text-foreground"
           aria-label="Close"
         >
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

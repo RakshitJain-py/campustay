@@ -22,7 +22,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans dark:bg-gray-950 transition-colors duration-300">
+    <div className="min-h-screen bg-background font-sans transition-colors duration-300">
       <main>
         <HeroSection onExploreClick={handleExploreClick} />
 
@@ -74,7 +74,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="bg-white py-24 dark:bg-gray-950">
+        <section className="bg-background py-24">
           <div className="mx-auto max-w-7xl px-6">
             <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
               How It Works

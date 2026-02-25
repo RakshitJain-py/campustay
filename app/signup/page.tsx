@@ -118,11 +118,11 @@ export default function SignUpPage() {
       <button
         type="button"
         onClick={() => setStep("role")}
-        className="text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+        className="text-sm text-foreground/50 transition-colors hover:text-foreground"
       >
         ← Change role
       </button>
-      <div className="mt-4 rounded-2xl border border-gray-200 bg-white p-8 shadow-md transition-colors duration-300 dark:border-gray-800 dark:bg-gray-900">
+      <div className="mt-4 rounded-2xl border border-border bg-card p-8 shadow-md transition-colors duration-300">
         <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
           Sign up as {ROLES.find((r) => r.id === role)?.label}
         </h2>
