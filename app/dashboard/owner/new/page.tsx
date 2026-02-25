@@ -89,7 +89,9 @@ export default function NewPropertyPage() {
                     college_nearby: formData.college_nearby,
                     address: formData.address,
                     price_per_month: parseInt(formData.price_per_month),
-                    thumbnail_url: "uploading..." // Will update shortly
+                    thumbnail_url: "uploading...", // Will update shortly
+                    amenities: Array.from(selectedAmenities),
+                    image_urls: []
                 })
                 .select()
                 .single();
