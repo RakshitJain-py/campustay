@@ -1,7 +1,7 @@
 "use client";
 
 import { supabase } from "@/lib/supabase";
-import Link from "next/link";
+import CustomLink from "./CustomLink";
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import ProfileDropdown from "./ProfileDropdown";
@@ -75,30 +75,30 @@ export default function Navbar() {
 
   const navLinks = (
     <>
-      <Link
+      <CustomLink
         href="/"
         onClick={() => setMenuOpen(false)}
         className="group relative rounded-lg px-4 py-2 text-base font-medium text-gray-700 transition-all duration-200 hover:bg-violet-50 hover:text-violet-600 dark:text-gray-300 dark:hover:bg-violet-900/30 dark:hover:text-violet-400"
       >
         Home
         <span className="absolute bottom-1 left-4 right-4 h-[2px] scale-x-0 rounded-full bg-violet-600 transition-transform duration-300 ease-out group-hover:scale-x-100 dark:bg-violet-400" />
-      </Link>
-      <Link
+      </CustomLink>
+      <CustomLink
         href="/#contact"
         onClick={() => setMenuOpen(false)}
         className="group relative rounded-lg px-4 py-2 text-base font-medium text-gray-700 transition-all duration-200 hover:bg-violet-50 hover:text-violet-600 dark:text-gray-300 dark:hover:bg-violet-900/30 dark:hover:text-violet-400"
       >
         Contact
         <span className="absolute bottom-1 left-4 right-4 h-[2px] scale-x-0 rounded-full bg-violet-600 transition-transform duration-300 ease-out group-hover:scale-x-100 dark:bg-violet-400" />
-      </Link>
-      <Link
+      </CustomLink>
+      <CustomLink
         href="/dashboard"
         onClick={() => setMenuOpen(false)}
         className="group relative rounded-lg px-4 py-2 text-base font-medium text-gray-700 transition-all duration-200 hover:bg-violet-50 hover:text-violet-600 dark:text-gray-300 dark:hover:bg-violet-900/30 dark:hover:text-violet-400"
       >
         Dashboard
         <span className="absolute bottom-1 left-4 right-4 h-[2px] scale-x-0 rounded-full bg-violet-600 transition-transform duration-300 ease-out group-hover:scale-x-100 dark:bg-violet-400" />
-      </Link>
+      </CustomLink>
 
 
       {user ? (
@@ -110,20 +110,20 @@ export default function Navbar() {
         />
       ) : (
         <>
-          <Link
+          <CustomLink
             href="/login"
             onClick={() => setMenuOpen(false)}
             className="rounded-lg px-4 py-2 text-base font-medium text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
           >
             Login
-          </Link>
-          <Link
+          </CustomLink>
+          <CustomLink
             href="/signup"
             onClick={() => setMenuOpen(false)}
             className="rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2 text-base font-medium text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg dark:from-violet-500 dark:to-indigo-500"
           >
             Sign Up
-          </Link>
+          </CustomLink>
         </>
       )}
     </>
@@ -145,12 +145,12 @@ export default function Navbar() {
           <div className="md:hidden">
             <DarkModeToggle />
           </div>
-          <Link href="/" className="group flex flex-col transition hover:opacity-90">
+          <CustomLink href="/" className="group flex flex-col transition hover:opacity-90">
             <span className="bg-gradient-to-r from-violet-600 to-indigo-500 bg-clip-text text-2xl sm:text-3xl font-semibold tracking-tight text-transparent dark:from-violet-400 dark:to-indigo-400">
               CampuStay
             </span>
             <span className="hidden sm:block text-xs text-gray-500 dark:text-gray-400">Smart Living for Smarter Cities</span>
-          </Link>
+          </CustomLink>
         </div>
 
         <div className="hidden flex-1 justify-center md:flex">
@@ -166,15 +166,15 @@ export default function Navbar() {
         <div className="flex items-center gap-3 md:hidden">
           {!user && (
             <>
-              <Link href="/login" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <CustomLink href="/login" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Login
-              </Link>
-              <Link
+              </CustomLink>
+              <CustomLink
                 href="/signup"
                 className="rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm"
               >
                 Sign Up
-              </Link>
+              </CustomLink>
             </>
           )}
           <button
@@ -198,15 +198,15 @@ export default function Navbar() {
       {menuOpen && (
         <div className="border-t border-gray-200 bg-white px-6 py-4 md:hidden dark:border-gray-800 dark:bg-gray-950">
           <div className="flex flex-col gap-1">
-            <Link href="/" onClick={() => setMenuOpen(false)} className="py-2 text-base font-medium text-gray-700 dark:text-gray-300">
+            <CustomLink href="/" onClick={() => setMenuOpen(false)} className="py-2 text-base font-medium text-gray-700 dark:text-gray-300">
               Home
-            </Link>
-            <Link href="/#contact" onClick={() => setMenuOpen(false)} className="py-2 text-base font-medium text-gray-700 dark:text-gray-300">
+            </CustomLink>
+            <CustomLink href="/#contact" onClick={() => setMenuOpen(false)} className="py-2 text-base font-medium text-gray-700 dark:text-gray-300">
               Contact
-            </Link>
-            <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="py-2 text-base font-medium text-gray-700 dark:text-gray-300">
+            </CustomLink>
+            <CustomLink href="/dashboard" onClick={() => setMenuOpen(false)} className="py-2 text-base font-medium text-gray-700 dark:text-gray-300">
               Dashboard
-            </Link>
+            </CustomLink>
 
             {user ? (
               <div className="py-2">
@@ -214,12 +214,12 @@ export default function Navbar() {
               </div>
             ) : (
               <>
-                <Link href="/login" onClick={() => setMenuOpen(false)} className="py-2 text-base font-medium text-gray-700 dark:text-gray-300">
+                <CustomLink href="/login" onClick={() => setMenuOpen(false)} className="py-2 text-base font-medium text-gray-700 dark:text-gray-300">
                   Login
-                </Link>
-                <Link href="/signup" onClick={() => setMenuOpen(false)} className="py-2 text-base font-medium text-violet-600 dark:text-violet-400">
+                </CustomLink>
+                <CustomLink href="/signup" onClick={() => setMenuOpen(false)} className="py-2 text-base font-medium text-violet-600 dark:text-violet-400">
                   Sign Up
-                </Link>
+                </CustomLink>
               </>
             )}
           </div>

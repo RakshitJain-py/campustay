@@ -4,7 +4,8 @@ import HeroSection from "@/components/HeroSection";
 import FeatureCard from "@/components/FeatureCard";
 import Modal from "@/components/Modal";
 import ScrollToTop from "@/components/ScrollToTop";
-import Link from "next/link";
+import Chatbot from "@/components/Chatbot";
+import CustomLink from "@/components/CustomLink";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -105,12 +106,12 @@ export default function Home() {
               </div>
             </div>
             <div className="mt-12 text-center">
-              <Link
+              <CustomLink
                 href="/signup"
                 className="inline-flex items-center rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-8 py-3 font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg dark:from-violet-500 dark:to-indigo-500"
               >
                 Get started
-              </Link>
+              </CustomLink>
             </div>
           </div>
         </section>
@@ -125,6 +126,7 @@ export default function Home() {
         </section>
       </main>
 
+      <Chatbot />
       <ScrollToTop />
 
       <Modal open={cityModalOpen} onClose={() => setCityModalOpen(false)}>

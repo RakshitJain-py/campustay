@@ -1,4 +1,4 @@
-import Link from "next/link";
+import CustomLink from "@/components/CustomLink";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
@@ -39,7 +39,7 @@ export default async function OwnerDashboardPage() {
           Your Properties
         </h1>
 
-        <Link
+        <CustomLink
           href="/dashboard/owner/new"
           className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg whitespace-nowrap"
         >
@@ -57,7 +57,7 @@ export default async function OwnerDashboardPage() {
             />
           </svg>
           List New Property
-        </Link>
+        </CustomLink>
       </div>
 
       {/* 2️⃣ Below Heading */}
@@ -67,12 +67,12 @@ export default async function OwnerDashboardPage() {
             You haven’t listed any properties yet.
           </h2>
 
-          <Link
+          <CustomLink
             href="/dashboard/owner/new"
             className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
           >
             List New Property
-          </Link>
+          </CustomLink>
         </div>
       ) : (
         <>
@@ -111,12 +111,12 @@ export default async function OwnerDashboardPage() {
                     </span>
 
                     <div className="flex items-center gap-2">
-                      <Link
+                      <CustomLink
                         href={`/dashboard/owner/${property.id}/edit`}
                         className="text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
                       >
                         Edit
-                      </Link>
+                      </CustomLink>
 
                       <span className="text-gray-300">•</span>
 
@@ -135,12 +135,12 @@ export default async function OwnerDashboardPage() {
 
           {/* 3️⃣ Footer Link */}
           <div className="mt-8 flex justify-end">
-            <Link
+            <CustomLink
               href="/dashboard/owner/properties"
               className="text-sm font-semibold text-violet-600 hover:text-violet-700 transition-colors"
             >
               Show All Properties →
-            </Link>
+            </CustomLink>
           </div>
         </>
       )}

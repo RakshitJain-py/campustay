@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import CustomLink from "./CustomLink";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
@@ -56,19 +56,19 @@ export default function HeroSection({ onExploreClick }: HeroSectionProps) {
               Explore Stays
             </button>
           ) : (
-            <Link
+            <CustomLink
               href="/featured"
               className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 px-8 py-3 font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg dark:from-indigo-500 dark:to-violet-500"
             >
               Explore Stays
-            </Link>
+            </CustomLink>
           )}
-          <Link
+          <CustomLink
             href={listHref}
             className="inline-flex items-center justify-center rounded-full border border-violet-600 px-8 py-3 font-semibold text-violet-600 transition-all duration-200 hover:bg-violet-600 hover:text-white dark:border-violet-500 dark:text-violet-400 dark:hover:bg-violet-600 dark:hover:text-white"
           >
             List Your Property
-          </Link>
+          </CustomLink>
         </div>
       </div>
     </section>

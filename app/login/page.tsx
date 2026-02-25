@@ -2,7 +2,7 @@
 
 import { supabase } from "@/lib/supabase";
 import { ensureProfileAndRole } from "@/lib/auth";
-import Link from "next/link";
+import CustomLink from "@/components/CustomLink";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -138,12 +138,12 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
           Don&apos;t have an account?{" "}
-          <Link
+          <CustomLink
             href="/signup"
             className="font-medium text-violet-600 hover:underline dark:text-violet-400"
           >
             Sign up
-          </Link>
+          </CustomLink>
         </p>
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { supabase } from "@/lib/supabase";
-import Link from "next/link";
+import CustomLink from "./CustomLink";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
@@ -75,28 +75,28 @@ export default function ProfileDropdown({
               <p className="truncate font-medium text-gray-900 dark:text-gray-100">
                 {name ?? "User"}
               </p>
-              <Link href="/profile" onClick={() => setOpen(false)} className="block truncate text-sm text-gray-500 hover:underline dark:text-gray-400">
+              <CustomLink href="/profile" onClick={() => setOpen(false)} className="block truncate text-sm text-gray-500 hover:underline dark:text-gray-400">
                 {user.email}
-              </Link>
+              </CustomLink>
               <p className="mt-1 text-xs font-semibold text-violet-600 dark:text-violet-400">
                 {ROLE_LABEL[role] ?? role}
               </p>
             </div>
             <div className="py-1">
-              <Link
+              <CustomLink
                 href="/profile"
                 onClick={() => setOpen(false)}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-violet-400"
               >
                 Profile Settings
-              </Link>
-              <Link
+              </CustomLink>
+              <CustomLink
                 href="/"
                 onClick={() => setOpen(false)}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-violet-400"
               >
                 Home
-              </Link>
+              </CustomLink>
               <button
                 type="button"
                 onClick={handleLogout}

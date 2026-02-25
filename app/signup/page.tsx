@@ -1,7 +1,7 @@
 "use client";
 
 import { registerUser, type SignUpRole } from "@/lib/auth";
-import Link from "next/link";
+import CustomLink from "@/components/CustomLink";
 import { useState } from "react";
 import RoleCard from "@/components/RoleCard";
 
@@ -72,12 +72,12 @@ export default function SignUpPage() {
             We sent a verification link to <strong>{email}</strong>. Click it to
             activate your account, then log in.
           </p>
-          <Link
+          <CustomLink
             href="/login"
             className="mt-6 inline-block rounded-lg bg-violet-600 px-4 py-2.5 font-medium text-white transition-all duration-200 hover:scale-105 hover:bg-violet-700"
           >
             Back to Login
-          </Link>
+          </CustomLink>
         </div>
       </div>
     );
@@ -102,12 +102,12 @@ export default function SignUpPage() {
         </div>
         <p className="mt-8 text-sm text-zinc-500">
           Already have an account?{" "}
-          <Link
+          <CustomLink
             href="/login"
             className="font-medium text-violet-600 hover:underline"
           >
             Log in
-          </Link>
+          </CustomLink>
         </p>
       </div>
     );
@@ -225,12 +225,12 @@ export default function SignUpPage() {
         </form>
         <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
           Already have an account?{" "}
-          <Link
+          <CustomLink
             href="/login"
             className="font-medium text-violet-600 hover:underline dark:text-violet-400"
           >
             Log in
-          </Link>
+          </CustomLink>
         </p>
       </div>
     </div>

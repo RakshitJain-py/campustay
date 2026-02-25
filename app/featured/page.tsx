@@ -3,8 +3,7 @@ import Pagination from "@/components/Pagination";
 import ScrollToTop from "@/components/ScrollToTop";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-
-import Link from "next/link";
+import CustomLink from "@/components/CustomLink";
 
 export default async function FeaturedPage({
   searchParams,
@@ -43,23 +42,23 @@ export default async function FeaturedPage({
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
             Showing verified stays in {city}
           </h1>
-          <Link
+          <CustomLink
             href="/search"
             className="rounded-full border border-violet-600 px-6 py-2 text-sm font-semibold text-violet-600 transition-all duration-200 hover:bg-violet-600 hover:text-white dark:border-violet-400 dark:text-violet-400 dark:hover:bg-violet-500 dark:hover:text-white text-center"
           >
             Fine Tune Your Search
-          </Link>
+          </CustomLink>
         </div>
 
         {!hasResults ? (
           <div className="rounded-2xl border border-gray-200 bg-gray-50 p-12 text-center dark:border-gray-800 dark:bg-gray-950">
             <p className="text-gray-600 dark:text-gray-400">No verified stays found for {city} yet.</p>
-            <Link
+            <CustomLink
               href="/"
               className="mt-4 inline-block rounded-full bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-700 transition-colors"
             >
               Back to Home
-            </Link>
+            </CustomLink>
           </div>
         ) : (
           <>
@@ -99,12 +98,12 @@ export default async function FeaturedPage({
                       </svg>
                       {property.area}, {property.city}
                     </p>
-                    <Link
-                      href="#"
+                    <CustomLink
+                      href={`/property/${property.id}`}
                       className="block w-full rounded-xl bg-gray-50 dark:bg-gray-900 py-2.5 text-center text-sm font-medium text-gray-900 dark:text-gray-100 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
                     >
                       View Details
-                    </Link>
+                    </CustomLink>
                   </div>
                 </div>
               ))}

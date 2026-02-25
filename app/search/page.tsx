@@ -4,7 +4,8 @@ import SearchControls from "@/components/SearchControls";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-import Link from "next/link";
+
+import CustomLink from "@/components/CustomLink";
 
 export default async function SearchPage({
   searchParams,
@@ -82,12 +83,12 @@ export default async function SearchPage({
         ) : !hasResults ? (
           <div className="rounded-2xl border border-border bg-muted p-12 text-center">
             <p className="text-foreground/60">No stays found matching your criteria.</p>
-            <Link
+            <CustomLink
               href="/featured"
               className="mt-4 inline-block rounded-full bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-700 transition-colors"
             >
               View Featured Stays
-            </Link>
+            </CustomLink>
           </div>
         ) : (
           <>
@@ -166,12 +167,12 @@ export default async function SearchPage({
                       </div>
                     )}
 
-                    <Link
+                    <CustomLink
                       href={`/property/${property.id}`}
                       className="block w-full rounded-xl bg-gray-50 dark:bg-gray-900 py-2.5 text-center text-sm font-medium text-gray-900 dark:text-gray-100 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
                     >
                       View Details
-                    </Link>
+                    </CustomLink>
                   </div>
                 </div>
               ))}

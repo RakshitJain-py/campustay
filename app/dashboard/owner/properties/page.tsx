@@ -1,4 +1,4 @@
-import Link from "next/link";
+import CustomLink from "@/components/CustomLink";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
@@ -31,17 +31,17 @@ export default async function OwnerPropertiesPage() {
         <div className="min-h-[70vh] w-full max-w-6xl mx-auto px-6 py-12">
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <Link
+                    <CustomLink
                         href="/dashboard"
                         className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
                     >
                         ← Back to Dashboard
-                    </Link>
+                    </CustomLink>
                     <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mt-2">
                         All Properties
                     </h1>
                 </div>
-                <Link
+                <CustomLink
                     href="/dashboard/owner/new"
                     className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg dark:from-violet-500 dark:to-indigo-500"
                 >
@@ -49,7 +49,7 @@ export default async function OwnerPropertiesPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                     </svg>
                     List New Property
-                </Link>
+                </CustomLink>
             </div>
 
             {!hasProperties ? (
@@ -88,12 +88,12 @@ export default async function OwnerPropertiesPage() {
                                     {property.city}
                                 </p>
                                 <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800/80 flex items-center justify-end gap-3">
-                                    <Link
+                                    <CustomLink
                                         href={`/dashboard/owner/${property.id}/edit`}
                                         className="text-sm font-medium text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors"
                                     >
                                         Edit
-                                    </Link>
+                                    </CustomLink>
                                 </div>
                             </div>
                         </div>

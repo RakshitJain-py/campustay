@@ -1,4 +1,4 @@
-import Link from "next/link";
+import CustomLink from "@/components/CustomLink";
 
 export default function GuardianDashboardPage() {
   return (
@@ -10,12 +10,12 @@ export default function GuardianDashboardPage() {
         <p className="text-gray-600 dark:text-gray-400 mb-6">
           Your dashboard modules and insights are being prepared.
         </p>
-        <Link
+        <CustomLink
           href="/featured"
           className="inline-block bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-6 py-2 rounded-full font-medium hover:opacity-90 transition"
         >
           Explore Stays
-        </Link>
+        </CustomLink>
       </div>
     </div>
   );
