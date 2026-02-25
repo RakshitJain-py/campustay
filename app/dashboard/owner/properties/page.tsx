@@ -1,4 +1,5 @@
 import CustomLink from "@/components/CustomLink";
+import DeletePropertyButton from "@/components/DeletePropertyButton";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
@@ -63,19 +64,21 @@ export default async function OwnerPropertiesPage() {
                             key={property.id}
                             className="group overflow-hidden rounded-2xl bg-white border border-gray-200 shadow-sm transition-all hover:shadow-md dark:bg-gray-950 dark:border-gray-800"
                         >
-                            <div className="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
+                            <CustomLink href={`/property/${property.id}`} className="block relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     src={property.thumbnail_url}
                                     alt={property.title}
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
-                            </div>
+                            </CustomLink>
                             <div className="p-5">
                                 <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate pr-4">
-                                        {property.title}
-                                    </h3>
+                                    <CustomLink href={`/property/${property.id}`} className="hover:text-violet-600 transition-colors">
+                                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate pr-4">
+                                            {property.title}
+                                        </h3>
+                                    </CustomLink>
                                     <span className="font-bold text-violet-600 dark:text-violet-400">
                                         ₹{property.price_per_month.toLocaleString()}
                                     </span>
@@ -94,6 +97,8 @@ export default async function OwnerPropertiesPage() {
                                     >
                                         Edit
                                     </CustomLink>
+                                    <span className="text-gray-300">•</span>
+                                    <DeletePropertyButton propertyId={property.id} propertyName={property.title} />
                                 </div>
                             </div>
                         </div>

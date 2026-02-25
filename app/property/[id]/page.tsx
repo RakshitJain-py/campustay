@@ -29,12 +29,23 @@ export default async function PropertyDetailPage({
 
     const { data: property, error } = await supabase
         .from("properties")
-        .select("*, owner:profiles(avatar_url, role)")
+        .select("*")
         .eq("id", id)
         .single();
 
     if (error || !property) {
+        console.error("Property fetch error:", error);
         notFound();
+    }
+
+    const { data: ownerProfile } = await supabase
+        .from("profiles")
+        .select("avatar_url, role")
+        .eq("id", property.owner_id)
+        .single();
+
+    if (ownerProfile) {
+        property.owner = ownerProfile;
     }
 
     const { data: { user } } = await supabase.auth.getUser();

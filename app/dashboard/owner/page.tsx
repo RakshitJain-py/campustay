@@ -1,4 +1,5 @@
 import CustomLink from "@/components/CustomLink";
+import DeletePropertyButton from "@/components/DeletePropertyButton";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
@@ -83,19 +84,19 @@ export default async function OwnerDashboardPage() {
                 key={property.id}
                 className="min-w-[340px] max-w-[360px] flex-shrink-0 group overflow-hidden rounded-2xl bg-white border border-gray-200 shadow-sm transition-all hover:shadow-md dark:bg-gray-950 dark:border-gray-800"
               >
-                <div className="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
+                <CustomLink href={`/property/${property.id}`} className="block relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
                   <img
                     src={property.thumbnail_url}
                     alt={property.title}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                </div>
+                </CustomLink>
 
                 <div className="p-5">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate pr-4">
+                    <CustomLink href={`/property/${property.id}`} className="hover:text-violet-600 transition-colors">
                       {property.title}
-                    </h3>
+                    </CustomLink>
                     <span className="font-bold text-violet-600 dark:text-violet-400">
                       ₹{property.price_per_month?.toLocaleString()}
                     </span>
@@ -120,12 +121,7 @@ export default async function OwnerDashboardPage() {
 
                       <span className="text-gray-300">•</span>
 
-                      <button
-                        type="button"
-                        className="text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
-                      >
-                        Delete
-                      </button>
+                      <DeletePropertyButton propertyId={property.id} propertyName={property.title} />
                     </div>
                   </div>
                 </div>

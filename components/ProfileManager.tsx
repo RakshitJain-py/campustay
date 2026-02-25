@@ -134,8 +134,8 @@ export default function ProfileManager({ user, profile, details }: ProfileManage
 
             {message.text && (
                 <div className={`p-4 rounded-xl text-sm font-medium ${message.type === 'error' ? 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400' :
-                        message.type === 'success' ? 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400' :
-                            'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
+                    message.type === 'success' ? 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400' :
+                        'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
                     }`}>
                     {message.text}
                 </div>
@@ -179,9 +179,7 @@ export default function ProfileManager({ user, profile, details }: ProfileManage
             )}
 
             {/* Account Deletion */}
-            <div className="pt-8 border-t border-border mt-8">
-                <h3 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-2">Danger Zone</h3>
-                <p className="text-sm text-foreground/60 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+            <div className="pt-8 border-t border-border mt-8 flex justify-end">
                 <button
                     type="button"
                     onClick={handleDeleteAccount}

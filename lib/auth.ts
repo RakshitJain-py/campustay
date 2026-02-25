@@ -42,6 +42,12 @@ export async function registerUser(
   });
 
   if (error) throw error;
+  
+  // If the user already existed, Supabase might return a user object but with an empty identities array
+  if (data?.user && data.user.identities && data.user.identities.length === 0) {
+    throw new Error("This email is already registered.");
+  }
+
   return data;
 }
 
