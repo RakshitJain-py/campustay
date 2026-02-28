@@ -133,15 +133,25 @@ export default async function PropertyDetailPage({
                         <div>
                             <h3 className="text-xl font-semibold text-foreground mb-4">What this place offers</h3>
                             {property.amenities && property.amenities.length > 0 ? (
-                                <ul className="grid grid-cols-2 gap-4">
-                                    {property.amenities.map((amenity: string, idx: number) => (
-                                        <li key={idx} className="flex items-center gap-3 text-foreground/80">
-                                            <svg className="h-5 w-5 text-violet-600 dark:text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                            </svg>
-                                            {amenity}
-                                        </li>
-                                    ))}
+                                <ul className="flex flex-wrap gap-3">
+                                    {property.amenities.map((amenity: string, idx: number) => {
+                                        const AMENITIES_MAP: Record<string, string> = {
+                                            "1": "WiFi",
+                                            "2": "AC",
+                                            "3": "Meals Included",
+                                            "4": "CCTV",
+                                            "5": "Gym",
+                                        };
+                                        const label = AMENITIES_MAP[amenity] || amenity;
+                                        return (
+                                            <li key={idx} className="flex items-center px-4 py-2 rounded-full text-sm font-medium border transition-all border-violet-500 bg-violet-50 text-violet-700 dark:bg-violet-900/30 dark:border-violet-400 dark:text-violet-300">
+                                                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                </svg>
+                                                {label}
+                                            </li>
+                                        );
+                                    })}
                                 </ul>
                             ) : (
                                 <p className="text-foreground/60 text-sm">Amenities not listed.</p>
