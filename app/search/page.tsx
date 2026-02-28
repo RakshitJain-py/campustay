@@ -1,10 +1,6 @@
 import Pagination from "@/components/Pagination";
-import ScrollToTop from "@/components/ScrollToTop";
-import SearchControls from "@/components/SearchControls";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-
-
 import CustomLink from "@/components/CustomLink";
 
 export default async function SearchPage({
@@ -14,13 +10,6 @@ export default async function SearchPage({
 }) {
   const resolvedParams = await searchParams;
   const q = (resolvedParams.q as string) || "";
-  const sort = (resolvedParams.sort as string) || "created_at_desc";
-  const minRating = resolvedParams.min_rating ? parseInt(resolvedParams.min_rating as string) : null;
-  const minPrice = resolvedParams.min_price ? parseInt(resolvedParams.min_price as string) : null;
-  const maxPrice = resolvedParams.max_price ? parseInt(resolvedParams.max_price as string) : null;
-  const maxDistance = resolvedParams.max_distance ? parseFloat(resolvedParams.max_distance as string) : null;
-  const verifiedOnly = resolvedParams.verified === "true";
-
   const pageParam = parseInt((resolvedParams.page as string) || "1");
   const LIMIT = 12;
   const page = Math.max(1, isNaN(pageParam) ? 1 : pageParam);
@@ -39,32 +28,20 @@ export default async function SearchPage({
     }
   );
 
-  let collegeLat = null;
-  let collegeLng = null;
+  let query = supabase
+    .from("properties")
+    .select("*", { count: "exact" })
+    .order("created_at", { ascending: false })
+    .range(pageOffset, pageOffset + LIMIT - 1);
+
   if (q) {
-    const { data: college } = await supabase.from("colleges").select("lat, lng").ilike("name", q).maybeSingle();
-    if (college) {
-      collegeLat = college.lat;
-      collegeLng = college.lng;
-    }
+    query = query.or(`title.ilike.%${q}%,address.ilike.%${q}%,city.ilike.%${q}%,area.ilike.%${q}%`);
   }
 
-  const { data: properties } = await supabase.rpc("search_properties_near_college", {
-    p_college_lat: collegeLat,
-    p_college_lng: collegeLng,
-    p_search_query: q,
-    p_sort_by: sort,
-    p_min_rating: minRating,
-    p_min_price: minPrice,
-    p_max_price: maxPrice,
-    p_max_distance: maxDistance,
-    p_verified_only: verifiedOnly,
-    p_page_size: LIMIT,
-    p_page_offset: pageOffset,
-  });
+  const { data: properties, count } = await query;
 
   const hasResults = properties && properties.length > 0;
-  const totalCount = Number(properties?.[0]?.total_count || 0);
+  const totalCount = count || 0;
   const totalPages = Math.ceil(totalCount / LIMIT);
 
   return (
@@ -74,18 +51,12 @@ export default async function SearchPage({
           {q ? `Search: "${q}"` : "Search stays"}
         </h1>
 
-        <SearchControls />
-
-        {!q && !hasResults ? (
-          <div className="rounded-2xl border border-border bg-muted p-12 text-center">
-            <p className="text-sm text-foreground/60">Enter a college or area in the search bar above.</p>
-          </div>
-        ) : !hasResults ? (
+        {!hasResults ? (
           <div className="rounded-2xl border border-border bg-muted p-12 text-center">
             <p className="text-foreground/60">No stays found matching your criteria.</p>
             <CustomLink
               href="/featured"
-              className="mt-4 inline-block rounded-full bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-700 transition-colors"
+              className="mt-4 inline-block rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg dark:from-violet-500 dark:to-indigo-500"
             >
               View Featured Stays
             </CustomLink>
@@ -105,14 +76,6 @@ export default async function SearchPage({
                       alt={property.title}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    {property.is_verified && (
-                      <div className="absolute top-3 left-3 bg-white/90 dark:bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-bold text-gray-900 dark:text-gray-100 flex items-center gap-1 border border-white/20 dark:border-white/10 shadow-sm">
-                        <svg className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
-                        </svg>
-                        Verified
-                      </div>
-                    )}
                   </div>
                   <div className="p-5">
                     <div className="flex justify-between items-start mb-2">
@@ -132,12 +95,6 @@ export default async function SearchPage({
                         </svg>
                         {property.area}, {property.city}
                       </p>
-
-                      {property.distance_km !== null && (
-                        <span className="text-xs font-medium text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/30 px-2 py-1 rounded-md">
-                          {property.distance_km.toFixed(1)} km
-                        </span>
-                      )}
                     </div>
 
                     <div className="flex items-center gap-2 mb-4">
@@ -152,24 +109,9 @@ export default async function SearchPage({
                       </span>
                     </div>
 
-                    {property.amenities && property.amenities.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {property.amenities.slice(0, 3).map((amenity: string, idx: number) => (
-                          <span key={idx} className="text-[10px] font-semibold uppercase tracking-wider text-gray-700 bg-gray-100 dark:text-gray-300 dark:bg-gray-800 px-2 py-1 rounded">
-                            {amenity}
-                          </span>
-                        ))}
-                        {property.amenities.length > 3 && (
-                          <span className="text-[10px] font-semibold text-gray-500 bg-gray-50 dark:bg-gray-800/50 px-2 py-1 rounded">
-                            +{property.amenities.length - 3}
-                          </span>
-                        )}
-                      </div>
-                    )}
-
                     <CustomLink
                       href={`/property/${property.id}`}
-                      className="block w-full rounded-xl bg-gray-50 dark:bg-gray-900 py-2.5 text-center text-sm font-medium text-gray-900 dark:text-gray-100 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+                      className="block w-full rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 py-2.5 text-center text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg dark:from-violet-500 dark:to-indigo-500"
                     >
                       View Details
                     </CustomLink>
@@ -184,7 +126,6 @@ export default async function SearchPage({
           </>
         )}
       </div>
-      <ScrollToTop />
     </div>
   );
 }

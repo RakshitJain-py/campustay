@@ -8,6 +8,7 @@ interface ReviewSectionProps {
     propertyId: string;
     ownerId: string;
     currentUserId?: string;
+    currentUserRole?: string;
     initialRatingAvg: number | null;
     initialRatingCount: number;
 }
@@ -16,6 +17,7 @@ export default function ReviewSection({
     propertyId,
     ownerId,
     currentUserId,
+    currentUserRole,
     initialRatingAvg,
     initialRatingCount,
 }: ReviewSectionProps) {
@@ -26,26 +28,47 @@ export default function ReviewSection({
 
     // Form State
     const [showForm, setShowForm] = useState(false);
-    const [rating, setRating] = useState(5);
+    const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
     const [file, setFile] = useState<File | null>(null);
 
     const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            global: {
+                fetch: (url: string | URL | Request, options?: RequestInit) => {
+                    const mergedOptions = { ...options, cache: "no-store" as RequestCache };
+                    if (mergedOptions.headers) {
+                        mergedOptions.headers = { ...mergedOptions.headers, "Cache-Control": "no-cache" };
+                    } else {
+                        mergedOptions.headers = { "Cache-Control": "no-cache" };
+                    }
+                    return fetch(url, mergedOptions);
+                }
+            }
+        }
     );
 
     useEffect(() => {
         async function fetchReviews() {
-            const { data } = await supabase
+            const { data, error } = await supabase
                 .from("reviews")
                 .select(`
-          id, rating, comment, created_at, user_id,
+          id,
+          rating,
+          comment,
+          created_at,
+          user_id,
           profiles:user_id (name, avatar_url),
           review_images (image_url)
         `)
                 .eq("property_id", propertyId)
                 .order("created_at", { ascending: false });
+
+            console.log("PROPERTY ID:", propertyId);
+            console.log("REVIEWS DATA:", data);
+            console.log("REVIEWS ERROR:", error);
 
             if (data) setReviews(data);
             setLoading(false);
@@ -53,27 +76,37 @@ export default function ReviewSection({
         fetchReviews();
     }, [propertyId, supabase, refresh]);
 
-    const canReview = permissions.canReviewProperty(currentUserId, ownerId);
+    const canReview = permissions.canReviewProperty(currentUserId, ownerId, currentUserRole);
     const hasReviewed = reviews.some((r) => r.user_id === currentUserId);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!currentUserId || !canReview || hasReviewed) return;
+        if (!currentUserId || !canReview || hasReviewed) {
+            console.error("Submission blocked:", { currentUserId, canReview, hasReviewed });
+            return;
+        }
+
+        if (rating === 0) {
+            alert("Please select a rating before posting.");
+            return;
+        }
 
         setSubmitting(true);
         try {
-            // Create Review first to get ID
-            const newReviewId = crypto.randomUUID();
-
-            const { error: reviewError } = await supabase.from("reviews").insert({
-                id: newReviewId,
-                property_id: propertyId,
-                user_id: currentUserId,
-                rating,
-                comment,
-            });
+            // Let Supabase generate the ID automatically
+            const { data: newReview, error: reviewError } = await supabase
+                .from("reviews")
+                .insert({
+                    property_id: propertyId,
+                    user_id: currentUserId,
+                    rating,
+                    comment,
+                })
+                .select("id")
+                .single();
 
             if (reviewError) throw reviewError;
+            const newReviewId = newReview.id;
 
             // Handle Image Upload if any
             if (file) {
@@ -100,12 +133,25 @@ export default function ReviewSection({
             setShowForm(false);
             setComment("");
             setFile(null);
-            setRating(5);
-        } catch (err) {
-            console.error(err);
-            alert("Failed to post review. Please try again.");
+            setRating(0);
+        } catch (err: any) {
+            console.error("Review post error:", err);
+            alert(`Failed to post review: ${err.message || "Unknown error"}`);
         } finally {
             setSubmitting(false);
+        }
+    };
+
+    const handleDelete = async (reviewId: string) => {
+        if (!confirm("Are you sure you want to delete this review?")) return;
+
+        try {
+            const { error } = await supabase.from("reviews").delete().eq("id", reviewId);
+            if (error) throw error;
+            setRefresh((p) => p + 1);
+        } catch (err) {
+            console.error(err);
+            alert("Failed to delete review.");
         }
     };
 
@@ -214,6 +260,17 @@ export default function ReviewSection({
                                 <div className="font-semibold text-foreground leading-tight">{review.profiles?.name || "Anonymous User"}</div>
                                 <div className="text-xs text-foreground/50">{new Date(review.created_at).toLocaleDateString()}</div>
                             </div>
+                            {currentUserId === review.user_id && (
+                                <button
+                                    onClick={() => handleDelete(review.id)}
+                                    className="ml-auto p-2 text-foreground/40 hover:text-red-500 transition-colors"
+                                    title="Delete review"
+                                >
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            )}
                         </div>
                         <div className="flex text-yellow-500 mb-3">
                             {[...Array(5)].map((_, i) => (

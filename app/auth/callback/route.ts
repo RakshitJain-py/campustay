@@ -15,14 +15,16 @@ export async function GET(request: Request) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
-      return NextResponse.redirect(`${baseUrl}/login?error=auth`);
+      console.error("[auth/callback] exchangeCodeForSession failed:", error.message);
+      return NextResponse.redirect(`${baseUrl}/login?error=auth&detail=${encodeURIComponent(error.message)}`);
     }
 
     const {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) {
-      return NextResponse.redirect(`${baseUrl}/login?error=auth`);
+      console.error("[auth/callback] getUser returned null after code exchange");
+      return NextResponse.redirect(`${baseUrl}/login?error=auth&detail=${encodeURIComponent("No user after code exchange")}`);
     }
     if (!user.email_confirmed_at) {
       return NextResponse.redirect(`${baseUrl}/login?error=verify`);
@@ -30,7 +32,9 @@ export async function GET(request: Request) {
 
     await ensureProfileAndRole(supabase, user);
     return NextResponse.redirect(`${baseUrl}/login?verified=true`);
-  } catch {
-    return NextResponse.redirect(`${baseUrl}/login?error=auth`);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown callback error";
+    console.error("[auth/callback] CAUGHT ERROR:", message);
+    return NextResponse.redirect(`${baseUrl}/login?error=auth&detail=${encodeURIComponent(message)}`);
   }
 }

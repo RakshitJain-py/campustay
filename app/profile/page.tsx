@@ -17,7 +17,7 @@ export default async function ProfilePage() {
 
     const { data: profile, error } = await supabase
         .from("profiles")
-        .select("role, avatar_url")
+        .select("role, avatar_url, name")
         .eq("id", user.id)
         .single();
 
@@ -27,10 +27,10 @@ export default async function ProfilePage() {
 
     let details = null;
     if (profile.role === "student") {
-        const { data } = await supabase.from("students").select("name, phone").eq("id", user.id).single();
+        const { data } = await supabase.from("students").select("phone").eq("id", user.id).single();
         details = data;
     } else if (profile.role === "guardian") {
-        const { data } = await supabase.from("guardians").select("name, phone").eq("id", user.id).single();
+        const { data } = await supabase.from("guardians").select("phone").eq("id", user.id).single();
         details = data;
     }
 
@@ -42,7 +42,7 @@ export default async function ProfilePage() {
 
             <ProfileManager
                 user={{ id: user.id, email: user.email || "" }}
-                profile={{ role: profile.role, avatar_url: profile.avatar_url }}
+                profile={{ role: profile.role, avatar_url: profile.avatar_url, name: profile.name }}
                 details={details}
             />
         </div>

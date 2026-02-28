@@ -5,13 +5,13 @@ import { createBrowserClient } from "@supabase/ssr";
 
 interface ProfileManagerProps {
     user: { id: string; email: string };
-    profile: { role: string; avatar_url: string | null };
+    profile: { role: string; avatar_url: string | null; name: string | null };
     details: any; // Additional details from students or guardians table
 }
 
 export default function ProfileManager({ user, profile, details }: ProfileManagerProps) {
     const [avatarUrl, setAvatarUrl] = useState(profile.avatar_url);
-    const [name, setName] = useState(details?.name || "");
+    const [name, setName] = useState(profile.name || "");
     const [phone, setPhone] = useState(details?.phone || "");
 
     const [loading, setLoading] = useState(false);
@@ -68,18 +68,28 @@ export default function ProfileManager({ user, profile, details }: ProfileManage
         setMessage({ text: "Saving changes...", type: "info" });
 
         try {
+            // Update name in profiles table
+            const { error: profileError } = await supabase
+                .from("profiles")
+                .update({ name })
+                .eq("id", user.id);
+
+            if (profileError) throw profileError;
+
+            // Update phone in role-specific table
             let table = "";
             if (profile.role === "student") table = "students";
             else if (profile.role === "guardian") table = "guardians";
 
             if (table) {
-                const { error } = await supabase
+                const { error: detailsError } = await supabase
                     .from(table)
-                    .update({ name, phone })
+                    .update({ phone })
                     .eq("id", user.id);
 
-                if (error) throw error;
+                if (detailsError) throw detailsError;
             }
+
             setMessage({ text: "Profile updated successfully!", type: "success" });
         } catch (err: any) {
             console.error(err);

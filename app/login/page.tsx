@@ -30,7 +30,8 @@ export default function LoginPage() {
       setError(VERIFY_MESSAGE);
       setSuccessMessage("");
     } else if (err === "auth") {
-      setError("Authentication failed. Please try again or sign up.");
+      const detail = searchParams.get("detail");
+      setError(detail || "Authentication failed. Please try again or sign up.");
       setSuccessMessage("");
     }
   }, [searchParams]);
@@ -59,6 +60,7 @@ export default function LoginPage() {
       }
 
       // 🔥 Ensure profile + role row exists (idempotent)
+      // This now throws on failure — the catch block will surface the exact error.
       await ensureProfileAndRole(supabase, data.user);
 
       router.push("/");

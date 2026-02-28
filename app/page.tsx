@@ -3,7 +3,6 @@
 import HeroSection from "@/components/HeroSection";
 import FeatureCard from "@/components/FeatureCard";
 import Modal from "@/components/Modal";
-import ScrollToTop from "@/components/ScrollToTop";
 import Chatbot from "@/components/Chatbot";
 import CustomLink from "@/components/CustomLink";
 import { useRouter } from "next/navigation";
@@ -38,7 +37,7 @@ export default function Home() {
           />
           <div className="relative mx-auto max-w-7xl px-6">
             <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-              Why CampuStay
+              Why Campustay
             </h2>
             <div className="mt-12 grid gap-8 sm:grid-cols-3">
               <FeatureCard
@@ -127,7 +126,6 @@ export default function Home() {
       </main>
 
       <Chatbot />
-      <ScrollToTop />
 
       <Modal open={cityModalOpen} onClose={() => setCityModalOpen(false)}>
         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Select city</h3>

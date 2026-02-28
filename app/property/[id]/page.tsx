@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import ImageGallery from "@/components/ImageGallery";
 import ShareButton from "@/components/ShareButton";
 import ReviewSection from "@/components/ReviewSection";
-import ScrollToTop from "@/components/ScrollToTop";
 
 export default async function PropertyDetailPage({
     params,
@@ -49,6 +48,15 @@ export default async function PropertyDetailPage({
     }
 
     const { data: { user } } = await supabase.auth.getUser();
+    let currentUserRole = undefined;
+    if (user) {
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+        currentUserRole = profile?.role;
+    }
 
     return (
         <div className="min-h-screen bg-background transition-colors duration-300">
@@ -61,14 +69,6 @@ export default async function PropertyDetailPage({
                             <h1 className="text-3xl font-bold text-foreground">
                                 {property.title}
                             </h1>
-                            {property.is_verified && (
-                                <div className="flex items-center gap-1 rounded-full bg-violet-100 dark:bg-violet-900/30 px-2.5 py-1 text-xs font-bold text-violet-700 dark:text-violet-400 border border-violet-200 dark:border-violet-800">
-                                    <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
-                                    </svg>
-                                    Verified
-                                </div>
-                            )}
                         </div>
 
                         <div className="flex flex-wrap items-center gap-4 text-sm text-foreground/70">
@@ -183,12 +183,12 @@ export default async function PropertyDetailPage({
                         propertyId={property.id}
                         ownerId={property.owner_id}
                         currentUserId={user?.id}
+                        currentUserRole={currentUserRole}
                         initialRatingAvg={property.rating_avg}
                         initialRatingCount={property.rating_count}
                     />
                 </div>
             </div>
-            <ScrollToTop />
         </div>
     );
 }

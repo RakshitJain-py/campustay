@@ -1,6 +1,4 @@
-import FilterDrawer from "@/components/FilterDrawer";
 import Pagination from "@/components/Pagination";
-import ScrollToTop from "@/components/ScrollToTop";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import CustomLink from "@/components/CustomLink";
@@ -30,7 +28,6 @@ export default async function FeaturedPage({
     .from("properties")
     .select("*")
     .eq("city", city)
-    .eq("is_verified", true)
     .order("created_at", { ascending: false });
 
   const hasResults = properties && properties.length > 0;
@@ -40,7 +37,7 @@ export default async function FeaturedPage({
       <div className="mx-auto max-w-7xl px-6 py-8">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-            Showing verified stays in {city}
+            Showing stays in {city}
           </h1>
           <CustomLink
             href="/search"
@@ -52,10 +49,10 @@ export default async function FeaturedPage({
 
         {!hasResults ? (
           <div className="rounded-2xl border border-gray-200 bg-gray-50 p-12 text-center dark:border-gray-800 dark:bg-gray-950">
-            <p className="text-gray-600 dark:text-gray-400">No verified stays found for {city} yet.</p>
+            <p className="text-gray-600 dark:text-gray-400">No stays found for {city} yet.</p>
             <CustomLink
               href="/"
-              className="mt-4 inline-block rounded-full bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-700 transition-colors"
+              className="mt-4 inline-block rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg dark:from-violet-500 dark:to-indigo-500"
             >
               Back to Home
             </CustomLink>
@@ -75,12 +72,6 @@ export default async function FeaturedPage({
                       alt={property.title}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute top-3 left-3 bg-white/90 dark:bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-bold text-gray-900 dark:text-gray-100 flex items-center gap-1 border border-white/20 dark:border-white/10 shadow-sm">
-                      <svg className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
-                      </svg>
-                      Verified
-                    </div>
                   </div>
                   <div className="p-5">
                     <div className="flex justify-between items-start mb-2">
@@ -100,7 +91,7 @@ export default async function FeaturedPage({
                     </p>
                     <CustomLink
                       href={`/property/${property.id}`}
-                      className="block w-full rounded-xl bg-gray-50 dark:bg-gray-900 py-2.5 text-center text-sm font-medium text-gray-900 dark:text-gray-100 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+                      className="block w-full rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 py-2.5 text-center text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg dark:from-violet-500 dark:to-indigo-500"
                     >
                       View Details
                     </CustomLink>
@@ -111,7 +102,6 @@ export default async function FeaturedPage({
           </>
         )}
       </div>
-      <ScrollToTop />
     </div>
   );
 }

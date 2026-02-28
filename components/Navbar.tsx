@@ -147,7 +147,7 @@ export default function Navbar() {
           </div>
           <CustomLink href="/" className="group flex flex-col transition hover:opacity-90">
             <span className="bg-gradient-to-r from-violet-600 to-indigo-500 bg-clip-text text-2xl sm:text-3xl font-semibold tracking-tight text-transparent dark:from-violet-400 dark:to-indigo-400">
-              CampuStay
+              Campustay
             </span>
             <span className="hidden sm:block text-xs text-gray-500 dark:text-gray-400">Smart Living for Smarter Cities</span>
           </CustomLink>
