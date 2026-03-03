@@ -16,27 +16,29 @@ export default function Chatbot() {
         }
     }, [messages, isOpen]);
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (!inputValue.trim()) return;
 
         const userMsg = { id: Date.now(), text: inputValue, sender: "user" };
+        const currentMessages = [...messages, userMsg];
+        
         setMessages((prev) => [...prev, userMsg]);
         setInputValue("");
 
-        // Simple bot logic
-        setTimeout(() => {
-            let botResponse = "I'm not sure about that, but you can try searching for 'Delhi' or 'Noida' to see featured stays!";
-            const lower = inputValue.toLowerCase();
-            if (lower.includes("price") || lower.includes("cheap")) {
-                botResponse = "Our stays start as low as ₹1,500/month. Use the budget filter in search to find precisely what you need.";
-            } else if (lower.includes("verified")) {
-                botResponse = "We manually verify every listing to ensure your safety. Look for the violet 'Verified' badge!";
-            } else if (lower.includes("hello") || lower.includes("hi")) {
-                botResponse = "Hello! I'm the CampuStay assistant. Ask me anything about finding student accommodations!";
-            }
-
-            setMessages((prev) => [...prev, { id: Date.now() + 1, text: botResponse, sender: "bot" }]);
-        }, 800);
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ messages: currentMessages }),
+            });
+            
+            if (!response.ok) throw new Error("API Error");
+            
+            const data = await response.json();
+            setMessages((prev) => [...prev, { id: Date.now() + 1, text: data.text, sender: "bot" }]);
+        } catch (error) {
+            setMessages((prev) => [...prev, { id: Date.now() + 1, text: "Sorry, I'm having trouble connecting right now.", sender: "bot" }]);
+        }
     };
 
     return (
